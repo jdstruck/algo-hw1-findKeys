@@ -10,7 +10,7 @@ int main()
         }
 
         printf("\n\n");
-
+        int moves = 0;
         for (int i=0; i<size/2; ++i) {
                 int prev = A[i];
                 for (int j=i+1; j<size-i; ++j) {
@@ -18,15 +18,12 @@ int main()
                                 int tmp = A[j];
                                 A[j] = prev;
                                 A[j-1] = tmp;
-                                for (int i=0; i<size; ++i) {
-                                        printf("%d", A[i]); 
-                                }
-                                printf("\n"); 
+                                ++moves;
                         }
                         prev = A[j];
                 }
         }
-
+        printf("%d\n", moves);
         //for (int i=0; i<size; ++i) {
         //        printf("%d", A[i]); 
         //}
