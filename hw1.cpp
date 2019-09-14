@@ -22,7 +22,7 @@ void findSumKeys(std::vector<int> A, int key) {
 
 int main() {
         auto t1 = std::chrono::high_resolution_clock::now();
-        std::vector<int> A = {18,23,4,35,99,67,198,20,38,55,2,18,19,487,11,40,10,13,27,22};
+        std::vector<int> A = {18,23,4,35,36,99,67,198,20,38,55,2,18,19,487,11,40,10,13,27,22};
         std::sort(A.begin(), A.end());//, std::greater<int>());
 
         //for (auto key: A) {
