@@ -41,7 +41,6 @@ int main(int argc, char *argv[]) {
         }
 
         std::vector<int> A;
-        std::string line;
 
         std::ifstream ifile(argv[1]);
         std::istream_iterator<int> input(ifile);
