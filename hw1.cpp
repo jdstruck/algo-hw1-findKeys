@@ -3,45 +3,62 @@
 #include <vector>
 #include <unordered_set>
 #include <functional>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <tuple>
 
-void findSumKeys(std::vector<int> A, int key) {
-        std::unordered_set<int> uset;
-        for (int i=0; i<A.size(); ++i) { 
-                int diff = key-A[i];
-                if (diff < 0) continue;
-                if (uset.find(diff) == uset.end()) {
-                        uset.emplace(A[i]);
-                } else {
-                        std::cout << key << ": ";
-                        std::cout << key-A[i] << " ";
-                        std::cout << A[i] << std::endl;
-                        uset.erase(A[i]);
-                }                      
+std::vector<std::tuple<int, int, int>> findAllSumKeys(std::vector<int> A) {
+        std::vector<std::tuple<int, int, int>> outputVec;
+        std::sort(A.begin(), A.end());
+
+                for (int i=A.size()-1; i >= 0; --i) { 
+                        int key = A[i];
+                        std::unordered_set<int> uset;
+                        for (int i=0; i<A.size(); ++i) {
+                                int diff = key-A[i];
+                                if (diff < 0) continue;
+                                if (uset.find(diff) == uset.end()) {
+                                        uset.emplace(A[i]);
+                                } else {
+                                       // std::cout << key << " " << diff << " " << A[i] << std::endl;
+                                        
+                                        outputVec.emplace_back(std::make_tuple(key, diff, A[i]));
+                                        uset.erase(A[i]);
+                                }                   
+                        }
+                A.erase(A.end()-1);
         }
+        return outputVec;
 }
 
-int main() {
-        auto t1 = std::chrono::high_resolution_clock::now();
-        std::vector<int> A = {18,23,4,35,36,99,67,198,20,38,55,2,18,19,487,11,40,10,13,27,22};
-        std::sort(A.begin(), A.end());//, std::greater<int>());
+int main(int argc, char *argv[]) {
 
-        //for (auto key: A) {
-        //for (int i=0; i<A.size(); ++i) { 
-        for (int i=A.size()-1; i >= 0; --i) { 
-                //std::cout << A[i] << " ";
-                int key = A[i];
-
-                findSumKeys(A,key);
-
-                A.erase(A.end()-1);
-        
+        if (argc < 3 || argc > 3) {
+                std::cerr << "Usage: " << argv[0] << " inputFile outputFile" << std::endl;
+                return 1;
         }
 
-        auto t2 = std::chrono::high_resolution_clock::now();
+        std::vector<int> A;
+        std::string line;
 
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2-t1).count();
+        std::ifstream ifile(argv[1]);
+        std::istream_iterator<int> input(ifile);
+        std::copy(input, std::istream_iterator<int>(), std::back_inserter(A));
 
-        std::cout << "\n" << "Execution Time: " << duration << " μs" << std::endl;
+        std::vector<std::tuple<int,int,int>> keySums = findAllSumKeys(A);
+
+        std::ofstream ofile (argv[2]);
+        if (ofile.is_open()) {
+                for (int i = keySums.size()-1; i >= 0; --i) {
+                        std::tuple<int,int,int> k = keySums[i];
+                        ofile << std::get<0>(k) << " ";
+                        ofile << std::get<1>(k) << " ";
+                        ofile << std::get<2>(k) << "\n";
+                }
+                ofile.close();
+        }
         return 0;
 
 }
