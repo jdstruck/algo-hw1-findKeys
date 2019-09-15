@@ -27,9 +27,10 @@ outputFile.
 
 ## How to run ##
 
-To compile the program, enter "make" in the program directory.
+To run the program, enter the following commands into the program directory:
 
-To run, enter $ ./solution inputFile.txt outputFile.txt 
+        $ make
+        $ ./solution inputFile.txt outputFile.txt 
 
 You may also use the additionally provided input files to test the program, or
 include your own.
